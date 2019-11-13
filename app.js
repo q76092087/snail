@@ -9,6 +9,8 @@ const logger = require('koa-logger')
 const index = require('./routes/index')
 const users = require('./routes/users')
 
+const koa2 = require('koa2-cors');
+
 // error handler
 onerror(app)
 
@@ -35,6 +37,9 @@ app.use(async (ctx, next) => {
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+
+// 跨域
+app.use(cors());
 
 // error-handling
 app.on('error', (err, ctx) => {
