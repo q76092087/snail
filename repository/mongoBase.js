@@ -1,3 +1,4 @@
+const sc = require('../static/statusCode');
 class mongoBase{
     constructor(db,collection){
         this.dbName = db;
@@ -8,12 +9,25 @@ class mongoBase{
         try{
             const db = global.client.db(this.dbName);
             let ret = await db.collection(this.collectionName).insertOne(item);
-            console.log("这个ret是什么",ret);
-            return ret.ops[0];
+            return {data:ret.ops,status:sc.OK};
         }catch(err){
             console.log(err.stack);
-            return null;
+            return {status:sc.BAD_REQUEST};
         }
     }
+
+    async insertMany(item) {
+        try {
+            const db = global.client.db(this.dbName);
+            let ret = await db.collection(this.collectionName).insertMany(item);
+            return {data:ret.ops,status:sc.OK};
+        } catch (err) {
+            console.log(err.stack);
+            return {status:sc.BAD_REQUEST};
+        } 
+    }
+
+
+
 }
 module.exports = mongoBase;

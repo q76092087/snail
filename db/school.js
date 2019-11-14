@@ -1,23 +1,28 @@
 const uuid = require('uuid-v4');
 const mb = require('../repository/mongoBase');
 const collectionName = "school";
-const dbName = "testyaohao";
+const dbName = "testsnail";
 
 
 class school{
     static async add(item){
         if (!item.hasOwnProperty("_id")) {
-            item.fri = uuid();
+            item._id = uuid();
         }
-        let data = {
-            _id:uuid(),
-            name:item.name,
-            class:item.class,
-            age:item.age
-        };
         let tb = new mb(dbName, collectionName);
-        
-        let r = tb.insert(data);
+        let r = tb.insert(item);
+        return r;
+    }
+
+    static async insertMany(data){
+        data = data.map(item=>{
+            if(!item.hasOwnProperty("_id")){
+                item._id = uuid();
+            }
+            return item;
+        });
+        let tb = new mb(dbName, collectionName);
+        let r = tb.insertMany(data);
         return r;
     }
 }
