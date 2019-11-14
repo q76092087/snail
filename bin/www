@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('demo:server');
 var http = require('http');
+var cfg = require('../config');
 
 /**
  * Get port from environment and store in Express.
@@ -25,7 +26,9 @@ var server = http.createServer(app.callback());
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(cfg.post,()=>{
+  console.log("服务器开启成功，端口号:"+cfg.post);
+});
 server.on('error', onError);
 server.on('listening', onListening);
 

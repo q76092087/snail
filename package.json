@@ -21,7 +21,8 @@
     "koa-views": "^6.2.0",
     "koa2-cors": "^2.0.6",
     "mongodb": "^3.3.4",
-    "pug": "^2.0.3"
+    "pug": "^2.0.3",
+    "uuid-v4": "^0.1.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
