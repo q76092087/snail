@@ -11,7 +11,8 @@ const users = require('./routes/users')
 
 const cors = require('koa2-cors'); // 跨域库
 const koa_static = require('koa-static'); // 配置静态资源库
-const mongoClient = require('mongodb').MongoClient;
+
+const MongoBase = require('./repository/mongoBase'); // 数据库操作类
 
 const cfg = require('./config'); // 自行配置文件
 
@@ -54,16 +55,7 @@ app.on('error', (err, ctx) => {
 });
 
 // 服务器启动连接数据库
-const opt = {
-  useNewUrlParser: true
-}
-mongoClient.connect(cfg.mongodbUrl,opt,(err,client)=>{
-  if (err) {
-    console.error("数据库连接出错：" + err.message);
-    return;
-  }
-  console.log("数据库连接成功!");
-  global.client = client;
-})
+let mb = new MongoBase();
+mb.createConnection();
 
 module.exports = app
