@@ -70,9 +70,74 @@ class mongoBase{
             return {status:status}
         } catch (err) {
             console.log(err.stack);
-            return null;
-        } finally {}
+            return {status:sc.BAD_REQUEST};
+        }
     }
+
+    async update(item) {
+        try {
+            const db = global.client.db(this.dbName);
+            let id = item._id;
+            delete item._id;
+            let ret =  await db.collection(this.collectionName).updateOne({
+                _id: id
+            }, {
+                $set: item
+            });
+            let status = '';
+            ret.result.n>0?(status=sc.OK):(status=sc.NO_CONTENT);
+            return {status:status}
+        } catch (err) {
+            console.log(err.stack);
+            return {status:sc.BAD_REQUEST};
+        }
+    }
+
+    async updateMany(idArr,item) {
+        try {
+            const db = global.client.db(this.dbName);
+            let ret =  await db.collection(this.collectionName).updateMany({
+                _id: {$in:idArr}
+            }, {
+                $set: item
+            });
+            let status = '';
+            ret.result.n>0?(status=sc.OK):(status=sc.NO_CONTENT);
+            return {status:status}
+        } catch (err) {
+            console.log(err.stack);
+            return {status:sc.BAD_REQUEST};
+        }
+    }
+
+    async find(query,order) {
+        try {
+            let status = '';
+            const db = global.client.db(this.dbName);
+            let ret = await db.collection(this.collectionName).find(query).sort(order).toArray();
+            return ret;
+        } catch (err) {
+            console.log(err.stack);
+            return {status:sc.BAD_REQUEST};
+        }
+    }
+
+    async findAndCount(query,order,pageIndex,pageSize) {
+        try {
+            let status = '';
+            const db = global.client.db(this.dbName);
+            let ret = await db.collection(this.collectionName).find(query).skip((pageIndex-1)*pageSize).limit(pageSize).sort(order).toArray();
+            let count = await db.collection(this.collectionName).count(query);
+            return {
+                list:ret,
+                count:count
+            };
+        } catch (err) {
+            console.log(err.stack);
+            return {status:sc.BAD_REQUEST};
+        }
+    }
+
 
 
 
