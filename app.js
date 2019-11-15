@@ -7,7 +7,6 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
 const index = require('./routes/index')
-const users = require('./routes/users')
 
 const cors = require('koa2-cors'); // 跨域库
 const koa_static = require('koa-static'); // 配置静态资源库
@@ -44,7 +43,6 @@ app.use(async (ctx, next) => {
 
 // routes
 app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
 
 // 跨域
 app.use(cors());

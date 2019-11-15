@@ -9,7 +9,8 @@ class mongoBase{
     
     createConnection(){
         const opt = {
-            useNewUrlParser: true
+            useNewUrlParser: true,
+            useUnifiedTopology: true
         }
         MongoClient.connect(cfg.mongodbUrl,opt,(err,client)=>{
             if (err) {
@@ -41,6 +42,36 @@ class mongoBase{
             console.log(err.stack);
             return {status:sc.BAD_REQUEST};
         } 
+    }
+
+    async delete(id) {
+        try {
+            const db = global.client.db(this.dbName);
+            let ret =  await db.collection(this.collectionName).deleteOne({
+                _id: id
+            });
+            let status = '';
+            ret.result.n>0?(status=sc.OK):(status=sc.NO_CONTENT);
+            return {status:status}
+        } catch (err) {
+            console.log(err.stack);
+            return {status:sc.BAD_REQUEST};
+        } 
+    }
+
+    async deleteMany(idArr) {
+        try {
+            const db = global.client.db(this.dbName);
+            let ret = await db.collection(this.collectionName).deleteMany({
+                _id:{$in:idArr}
+            });
+            let status = '';
+            ret.result.n>0?(status=sc.OK):(status=sc.NO_CONTENT);
+            return {status:status}
+        } catch (err) {
+            console.log(err.stack);
+            return null;
+        } finally {}
     }
 
 

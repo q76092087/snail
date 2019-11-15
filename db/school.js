@@ -1,7 +1,8 @@
 const uuid = require('uuid-v4');
-const mb = require('../repository/mongoBase');
+const Mb = require('../repository/mongoBase');
+const cfg = require('../config');
 const collectionName = "school";
-const dbName = "testsnail";
+const dbName = cfg.test+"snail";
 
 
 class school{
@@ -9,7 +10,7 @@ class school{
         if (!item.hasOwnProperty("_id")) {
             item._id = uuid();
         }
-        let tb = new mb(dbName, collectionName);
+        let tb = new Mb(dbName, collectionName);
         let r = tb.insert(item);
         return r;
     }
@@ -21,8 +22,20 @@ class school{
             }
             return item;
         });
-        let tb = new mb(dbName, collectionName);
+        let tb = new Mb(dbName, collectionName);
         let r = tb.insertMany(data);
+        return r;
+    }
+
+    static async delete(id){
+        let tb = new Mb(dbName,collectionName);
+        let r = tb.delete(id);
+        return r;
+    }
+
+    static async deleteMany(idArr){
+        let tb = new Mb(dbName,collectionName);
+        let r = tb.deleteMany(idArr);
         return r;
     }
 }
