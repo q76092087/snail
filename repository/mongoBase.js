@@ -112,6 +112,7 @@ class mongoBase{
 
     async find(query,order) {
         try {
+            if(!query) throw new Error("未传查询条件");
             let status = '';
             const db = global.client.db(this.dbName);
             let ret = await db.collection(this.collectionName).find(query).sort(order).toArray();
@@ -124,6 +125,7 @@ class mongoBase{
 
     async findAndCount(query,order,pageIndex,pageSize) {
         try {
+            if(!query) throw new Error("未传查询条件");
             let status = '';
             const db = global.client.db(this.dbName);
             let ret = await db.collection(this.collectionName).find(query).skip((pageIndex-1)*pageSize).limit(pageSize).sort(order).toArray();
@@ -138,8 +140,34 @@ class mongoBase{
         }
     }
 
+    async aggregate(item) {
+        let arr = [];
+        try {
+            if (item.match) {
+                item.match = JSON.stringify(item.match);
+                arr.push({
+                    $match:typeof(item.match) == "string" ? JSON.parse(item.match) : item.match
+                });
+            }
 
-
-
+            if (item.group) {
+                item.group = JSON.stringify(item.group);
+                arr.push({
+                    $group:typeof(item.group) == "string" ? JSON.parse(item.group) : item.group
+                });
+            }
+            if (item.sort) {
+                arr.push({
+                    $sort: item.sort
+                });
+            }
+            const db = global.client.db(this.dbName);
+            let ret = await db.collection(this.collectionName).aggregate(arr).toArray();
+            return ret;
+        } catch (err) {
+            console.log(err.stack);
+            return {status:sc.BAD_REQUEST};
+        } finally {}
+    }
 }
 module.exports = mongoBase;

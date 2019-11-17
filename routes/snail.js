@@ -85,3 +85,12 @@ module.exports = router.post('snail/school/findPage',async (ctx,next)=>{
         ctx.body = error;
     }
 })
+module.exports = router.post('snail/school/group',async (ctx,next)=>{
+    let body = ctx.request.body;
+    try {
+        r = await school.aggregate(body);
+        ctx.body = r;
+    } catch (error) {
+        ctx.body = error;
+    }
+})

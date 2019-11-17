@@ -62,5 +62,11 @@ class school{
         let r = tb.findAndCount(query,order,pageIndex,pageSize);
         return r;
     }
+
+    static async aggregate(query){
+        let tb = new Mb(dbName,collectionName);
+        let r = tb.aggregate(query);
+        return r;
+    }
 }
 module.exports = school

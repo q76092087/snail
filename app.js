@@ -15,8 +15,12 @@ const MongoBase = require('./repository/mongoBase'); // 数据库操作类
 
 const cfg = require('./config'); // 自行配置文件
 
+
 // =======定义全局变量=========
 global.client = null;
+
+// =======静态资源文件夹=========
+app.use(koa_static(__dirname + '/public'))
 
 // error handler
 onerror(app)
@@ -27,7 +31,7 @@ app.use(bodyparser({
 }))
 app.use(json())
 app.use(logger())
-app.use(koa_static(__dirname + '/public'))
+
 
 app.use(views(__dirname + '/views', {
   extension: 'pug'
