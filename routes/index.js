@@ -1,6 +1,6 @@
 const router = require('koa-router')();
 const snail = require('./snail');
-const file = require('./file');
+const source = require('./source');
 const cfg = require('../config');
 const sc = require('../static/statusCode');
 
@@ -15,6 +15,6 @@ router.post(/^.*snail/,async (ctx, next)=>{
 })
 
 router.use('/',snail.routes(),snail.allowedMethods());
-router.use('/',file.routes(),file.allowedMethods());
+router.use('/',source.routes(),source.allowedMethods());
 
 module.exports = router

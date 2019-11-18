@@ -9,7 +9,9 @@ class file{
         if(!item.hasOwnProperty("_id")){
             item._id = uuid();
         }
-        // url name size extension category
+        let tb = new Mb(dbName, collectionName);
+        let r = tb.insert(item);
+        return r;
     }
 }
 module.exports = file

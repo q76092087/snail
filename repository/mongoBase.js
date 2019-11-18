@@ -26,7 +26,7 @@ class mongoBase{
         try{
             const db = global.client.db(this.dbName);
             let ret = await db.collection(this.collectionName).insertOne(item);
-            return {data:ret.ops,status:sc.OK};
+            return {data:ret.ops[0],status:sc.OK};
         }catch(err){
             console.log(err.stack);
             return {status:sc.BAD_REQUEST};

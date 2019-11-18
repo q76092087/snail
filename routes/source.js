@@ -1,5 +1,6 @@
 const router = require('koa-router')();
 const multer = require('koa-multer'); // 文件上传
+const file = require('../db/source/file');
 
 // =======文件上传配置=========
 const storage = multer.diskStorage({
@@ -17,8 +18,20 @@ const upload = multer({ storage: storage });
 
 
 module.exports = router.post('up',upload.single('file'), async (ctx, next) => {
-  
-  ctx.body = {
-      filename: ctx.req.file//返回文件名
-    }
+  let reg = /public/;
+  let f = ctx.req.file;
+  let temp = f.filename.split('.');
+  let data = {
+    url:f.path.replace(reg,''),
+    name:f.filename,
+    size:f.size,
+    extension:temp[temp.length-1],
+    category:f.mimetype
+  }
+  try {
+    let r = await file.add(data);
+    ctx.body = r;
+  } catch (error) {
+    ctx.body = error;
+  }
 });
