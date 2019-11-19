@@ -9,6 +9,9 @@ class file{
         if(!item.hasOwnProperty("_id")){
             item._id = uuid();
         }
+        if (!item.hasOwnProperty("createAt")) {
+            item.createAt = new Date();
+        }
         let tb = new Mb(dbName, collectionName);
         let r = tb.insert(item);
         return r;
