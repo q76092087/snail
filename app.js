@@ -57,7 +57,7 @@ app.on('error', (err, ctx) => {
 });
 
 // 服务器启动连接数据库
-let mb = new MongoBase();
-mb.createConnection();
+// let mb = new MongoBase();
+// mb.createConnection();
 
 module.exports = app

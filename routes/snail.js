@@ -3,11 +3,12 @@ const school = require('../db/snail/school');
 const sc = require('../static/statusCode');
 
 // ==========school===========
-module.exports = router.post('snail/school/insert', async (ctx, next) => {
+module.exports = router.post(/^\/snail\/\w*/, async (ctx, next) => {
     let body = ctx.request.body;
     let r = {};
     try {
-        r = await school.add(body);
+        console.log('表名',ctx.request.url.split('/')[2])
+        // r = await school.add(body);
         ctx.body = r;
     } catch (error) {
         ctx.body = error;
