@@ -1,9 +1,12 @@
 const router = require('koa-router')();
 const school = require('../db/snail/school');
 const sc = require('../static/statusCode');
+const cfg = require('../config');
+
+
 
 // ==========school===========
-module.exports = router.post(/^\/snail\/\w*/, async (ctx, next) => {
+router.post(/^\/snail.+\/insert$/, async (ctx, next) => {
     let body = ctx.request.body;
     let r = {};
     try {
@@ -14,7 +17,7 @@ module.exports = router.post(/^\/snail\/\w*/, async (ctx, next) => {
         ctx.body = error;
     }
 });
-module.exports = router.post('snail/school/insertMany', async (ctx, next) => {
+router.post(/^\/snail.+\/insertMany$/, async (ctx, next) => {
     let body = ctx.request.body;
     let r = {};
     try {
@@ -24,7 +27,7 @@ module.exports = router.post('snail/school/insertMany', async (ctx, next) => {
         ctx.body = error;
     }
 });
-module.exports = router.post('snail/school/delete',async (ctx,next)=>{
+router.post(/^\/snail.+\/delete$/,async (ctx,next)=>{
     let body = ctx.request.body;
     try {
         r = await school.delete(body.id);
@@ -33,7 +36,7 @@ module.exports = router.post('snail/school/delete',async (ctx,next)=>{
         ctx.body = error;
     }
 })
-module.exports = router.post('snail/school/deleteMany',async (ctx,next)=>{
+router.post(/^\/snail.+\/deleteMany$/,async (ctx,next)=>{
     let body = ctx.request.body;
     try {
         r = await school.deleteMany(body);
@@ -42,7 +45,7 @@ module.exports = router.post('snail/school/deleteMany',async (ctx,next)=>{
         ctx.body = error;
     }
 })
-module.exports = router.post('snail/school/update',async (ctx,next)=>{
+router.post(/^\/snail.+\/update$/,async (ctx,next)=>{
     let body = ctx.request.body;
     try {
         r = await school.update(body);
@@ -51,7 +54,7 @@ module.exports = router.post('snail/school/update',async (ctx,next)=>{
         ctx.body = error;
     }
 })
-module.exports = router.post('snail/school/updateMany',async (ctx,next)=>{
+router.post(/^\/snail.+\/updateMany$/,async (ctx,next)=>{
     let body = ctx.request.body;
     let data = body.data;
     let ids = body.ids;
@@ -62,7 +65,7 @@ module.exports = router.post('snail/school/updateMany',async (ctx,next)=>{
         ctx.body = error;
     }
 })
-module.exports = router.post('snail/school/find',async (ctx,next)=>{
+router.post(/^\/snail.+\/find$/,async (ctx,next)=>{
     let body = ctx.request.body;
     let query = body.query;
     let order = body.order;
@@ -73,7 +76,7 @@ module.exports = router.post('snail/school/find',async (ctx,next)=>{
         ctx.body = error;
     }
 })
-module.exports = router.post('snail/school/findPage',async (ctx,next)=>{
+router.post(/^\/snail.+\/findPage$/,async (ctx,next)=>{
     let body = ctx.request.body;
     let query = body.query;
     let order = body.order;
@@ -86,7 +89,7 @@ module.exports = router.post('snail/school/findPage',async (ctx,next)=>{
         ctx.body = error;
     }
 })
-module.exports = router.post('snail/school/group',async (ctx,next)=>{
+router.post(/^\/snail.+\/group$/,async (ctx,next)=>{
     let body = ctx.request.body;
     try {
         r = await school.aggregate(body);
@@ -95,3 +98,4 @@ module.exports = router.post('snail/school/group',async (ctx,next)=>{
         ctx.body = error;
     }
 })
+module.exports = router

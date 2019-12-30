@@ -7,6 +7,7 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
 const index = require('./routes/index')
+const snail = require('./routes/snail')
 
 const cors = require('koa2-cors'); // 跨域库
 const koa_static = require('koa-static'); // 配置静态资源库
@@ -46,7 +47,9 @@ app.use(async (ctx, next) => {
 })
 
 // routes
+// console.log('这个index',index)
 app.use(index.routes(), index.allowedMethods())
+// app.use(snail.routes(), snail.allowedMethods())
 
 // 跨域
 app.use(cors());
